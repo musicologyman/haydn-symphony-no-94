@@ -1,4 +1,4 @@
-\version "2.18.2"
+\version "2.20.0"
 
 \include "../lilypond-page-sizes/paper-sizes.ily"
 
@@ -20,6 +20,14 @@ globalIntro = {
   \mark "Adagio cantabile"
   \key g \major
   \time 3/4
+}
+
+globalExposition = {
+  \once \override Score.RehearsalMark #'X-offset = #5
+  \once \override Score.RehearsalMark #'Y-offset = #5
+  \mark "Vivace assai"
+  \time 6/8
+  \partial 4.
 }
 
 introTacet = {
@@ -50,6 +58,10 @@ introAIII = {
   r r
 }
 
+halfMeasureHairpin = {
+  s8. \<  s8. \> \! | 
+}
+
 fluteI = \relative d''' {
   \globalIntro
   R2. * 4
@@ -67,7 +79,7 @@ fluteI = \relative d''' {
   >>
   \partcombineAutomatic r8 r4 r |
   R2. * 2
-  \partcombineApartOnce
+  \once \partcombineApart
   <<
     { fis'2 }
     % ADHOC
@@ -241,7 +253,34 @@ violinI = \relative g' {
   a (g fis! es d cis) |
   c!8. <c a'>16 \f <c a'>4 r |
   c'4. \sf fis,8 \p (a c, |
+  \noBreak
   e a,) c4 r
+  \repeat volta 2 {
+   \globalExposition
+     
+   << { b4 (e8) } 
+      { 
+        \once \override Hairpin #'minimum-length = #5.0
+        s8. \p \< 
+        \once \override Hairpin #'minimum-length = #3.5 
+        s8. \> \! 
+      } 
+   >>
+    d8 \! (c) b-.
+   << 
+     { a4 (d8) c8 (b) a-.} 
+      { 
+        \once \override Hairpin #'minimum-length = #5.0
+        s8. \p \< 
+        \once \override Hairpin #'minimum-length = #3.5 
+        s8. \> s4. \!
+      } 
+   >>  
+   g4 (gis8) a4 (b8) 
+   c-. a-. fis-. 
+   g8 \f
+   s2. 
+  }
 }
 
 violinII = \relative d' {
