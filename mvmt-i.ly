@@ -1,6 +1,8 @@
 \version "2.20.0"
 
 \include "../lilypond-page-sizes/paper-sizes.ily"
+\include "./mvmt-i-fragments.ly"
+\include "./mvmt-i-functions.ly"
 
 \header {
   tagline = ##f
@@ -22,13 +24,6 @@ globalIntro = {
   \time 3/4
 }
 
-globalExposition = {
-  \once \override Score.RehearsalMark #'X-offset = #5
-  \once \override Score.RehearsalMark #'Y-offset = #5
-  \mark "Vivace assai"
-  \time 6/8
-  \partial 4.
-}
 
 introTacet = {
   R2. * 17
@@ -59,7 +54,7 @@ introAIII = {
 }
 
 halfMeasureHairpin = {
-  s8. \<  s8. \> \! | 
+  s8. \<  s8. \> \! |
 }
 
 fluteI = \relative d''' {
@@ -87,7 +82,13 @@ fluteI = \relative d''' {
     { s2 }
   >>
   r4 |
-  R2.
+  R2. 
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI
+    \fluteExpoI
+  }
 }
 
 fluteII = \relative b'' {
@@ -99,7 +100,14 @@ fluteII = \relative b'' {
   a8 \! r8 r4 r |
   R2. * 2
   fis'2 \sf r4 |
-  R2.
+  R2. 
+
+  %exposition
+
+  \repeat volta 2 {
+    \ExpoI
+    \fluteExpoI
+  }
 }
 
 oboeI = \relative d'' {
@@ -117,13 +125,49 @@ oboeI = \relative d'' {
   >>
   \partcombineAutomatic r8 r4 r |
   R2. * 2
-  % <<
-  %     c'2
-  %     { s2 \sf }
-  %   >>
   c'2 \sf
   r4
-  R2.
+  R2. 
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI
+    g8 \f g16 (fis g a) b4 r8 |
+    b8 b16 (a b c) d8-. b-. g-. |
+    e4. fis |
+    g fis |
+    g fis |
+    \repeat unfold 2 { g8 g g fis4 r8 } |
+
+    % page 3 system 1
+    \partcombineApart g8 
+      \partcombineUnisono
+      r 
+      \partcombineApart
+      fis [(g)] 
+      \partcombineUnisono
+      r 
+      \partcombineApart
+      fis
+    (g8) \partcombineUnisono r
+      \partcombineApart
+      fis [(g)] \partcombineUnisono r
+      \partcombineApart
+      g16 (a) |
+    <<
+      { b4. cis4. }
+      % ADHOC
+      % { s2. \sf }
+    >>|
+    d8 d d d4 \partcombineUnisono r8
+    \partcombineApart
+    d, d d d4 \partcombineUnisono r8 |
+    \partcombineApart
+    c'! c c c4 \partcombineUnisono r8 |
+    \partcombineApart
+    d, d d d4 \partcombineUnisono r8
+    \partcombineAutomatic
+  }
 }
 
 oboeII = \relative b' {
@@ -137,7 +181,32 @@ oboeII = \relative b' {
   d8 r r4 r
   R2. * 2
   a'2 \sf r4
-  s2.
+  R2.  
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI
+
+    b,8 \f b16 (a b c) d4 r8
+
+    % page 2 system 2
+    g8 g16 (fis g a) b8-. g-. d-.
+    c4. a
+    b c
+    b c
+    b8 b b c4 r8
+    b8 b b c4 r8
+
+    % page 3 system 1
+    b8 r c [(b)] r c
+    (b) r c [(b)] r a |
+    g4. \sf e |
+    \repeat unfold 2 { fis8 fis fis fis4 r8 } |
+
+    % page 3 system 2
+    a'8 a a a4 r8 |
+    fis fis fis fis4 r8
+  }
 }
 
 bassoonI = \relative d' {
@@ -159,6 +228,11 @@ bassoonI = \relative d' {
   R2. * 2
   c2 \sf r4
   R2.
+  
+  %exposition 
+  \repeat volta 2 {
+    \bassoonExpoI
+  }
 }
 
 bassoonII = \relative b {
@@ -180,6 +254,11 @@ bassoonII = \relative b {
   R2. * 2
   a2 \sf r4
   R2.
+    
+  %exposition 
+  \repeat volta 2 {
+   \bassoonExpoI
+  }
 }
 
 hornI = \relative c {
@@ -198,6 +277,33 @@ hornI = \relative c {
   g8. g16 \f g4 r |
   g2 \sf r4
   R2.
+  
+  %exposition
+  \repeat volta 2 {
+      \ExpoI
+      c8 \f c c c4 r8 |
+      c8 c c c4 r8 |
+      c4. d 
+      e d 
+      e d
+      \repeat unfold 2 {
+        e8 e e d4 r8
+      }
+      \rc e r
+      \rc { d [(e)] } r 
+      \rc { d (e) } r 
+      \rc { d [(e)] } r
+      \partcombineApart
+      d
+      \rc << c4 
+         % ADHOC
+         % {s4 \sf} 
+      >> r8 \rc c4 r8 |
+      \repeat unfold 2 { \rc { g8 g g g4}  r8 }
+      
+      % page 3 system 2
+      \repeat unfold 2 { \rc { d' d d d4}  r8 }
+  }
 }
 
 hornII = \relative c, {
@@ -216,22 +322,96 @@ hornII = \relative c, {
   g8. g16 \f g4 r |
   g2 \sf r4
   R2.
+  
+  \repeat volta 2 {
+    \ExpoI
+    e'8 \f e e e4 r8 |
+    e8 e e e4 r8 |
+    c4. g'
+    c g
+    c g
+    \repeat unfold 2 {
+      c8 c c g4 r8 
+    }
+    c r g [(c)] r g 
+    (c) r g [(c)] r g |
+    c,4 \sf r8 c4 r8
+    \repeat unfold 4 { g'8 g g g4 r8 } 
+    
+  }
 }
 
-trumpetI = \relative c' {
+trumpetI = \relative d'' {
   \time 3/4
   \introTacet
+  
+  \repeat volta 2 {
+    \ExpoI
+    d8 \f d d d4 r8
+    d8 d d d4 r8
+    \partcombineApart
+    e4. d
+    \repeat unfold 2 { \rc d4 {r8 r4 r8 } }
+    \repeat unfold 2 { \rc { d8 d d d4 } r8 }
+    
+    % page 3 system 1
+    \repeat unfold 2 { \rc d r \rc { d [d] } r 
+                       \partcombineApart d }
+    \rc  
+        <<
+          g4
+          % ADHOC
+          % s4 \sf
+        >> r8
+     \rc g4 r8
+     \repeat unfold 4 { \rc { d8 d d d4 } r8 }
+    }
+  }
+
+
+trumpetII = \relative g' {
+  \time 3/4
+  \introTacet
+  
+  \repeat volta 2 {
+    \ExpoI
+    g8 \f g g g4 r8 |
+    g8 g g g4 r8 |
+    c4. d |
+    g,4 r8 r4 r8 |
+    g4 r8 r4 r8 |
+    g8 g g d'4 r8 |
+    g,8 g g d'4 r8 |
+    
+    % page 3 system 1
+    g, r d' [d] r d |
+    d r d [d] r d
+    
+    g,4 \sf r8 g4 r8
+    \repeat unfold 2 { d'8 d d d4 r8 }
+    \repeat unfold 2 { g,8 g g g4 r8 }
+  }
 }
 
-
-trumpetII = \relative c' {
+timpani = \relative g, {
+  \clef bass
   \time 3/4
   \introTacet
-}
-
-timpani = \relative c{
-  \time 3/4
-  \introTacet
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI 
+    g8 \f g g g4 r8
+    g8 g g g4 r8 |
+    \repeat unfold 6 { g4 r8 }
+    \repeat unfold 2 { g8 g g g4 r8 }
+    
+    % page 3 system 1
+    g r d' [g,] r d' 
+    g, r d' [g,] r d'
+    g,4 r8 g4 r8 |
+    \repeat unfold 4 {d'8 d d d4 r8}
+  }
 }
 
 violinI = \relative g' {
@@ -253,33 +433,55 @@ violinI = \relative g' {
   a (g fis! es d cis) |
   c!8. <c a'>16 \f <c a'>4 r |
   c'4. \sf fis,8 \p (a c, |
-  \noBreak
-  e a,) c4 r
+  e a,) c4 r  % \bar "||" \break
+ 
+
+  % exposition
   \repeat volta 2 {
-   \globalExposition
-     
-   << { b4 (e8) } 
-      { 
-        \once \override Hairpin #'minimum-length = #5.0
-        s8. \p \< 
-        \once \override Hairpin #'minimum-length = #3.5 
-        s8. \> \! 
-      } 
-   >>
+    \bar ".|:"
+    \globalExposition
+    \override DynamicText #'X-offset = #-2.0
+    <<
+      { b4 (e8) }
+      {
+        \once \override Hairpin #'minimum-length = #4.5
+        s8. \p \<
+        \once \override Hairpin #'minimum-length = #4
+        s8. \> \!
+      }
+    >>
+    \revert DynamicText #'X-offset
     d8 \! (c) b-.
-   << 
-     { a4 (d8) c8 (b) a-.} 
-      { 
+    <<
+      { a4 (d8) c8 (b) a-.}
+      {
+        \once \override Hairpin #'minimum-length = #4.0
+        s8. \<
         \once \override Hairpin #'minimum-length = #5.0
-        s8. \p \< 
-        \once \override Hairpin #'minimum-length = #3.5 
         s8. \> s4. \!
-      } 
-   >>  
-   g4 (gis8) a4 (b8) 
-   c-. a-. fis-. 
-   g8 \f
-   s2. 
+      }
+    >>
+    g4 (gis8) a4 (b8)
+    c-. a-. fis-.
+    g8 \f g'16 (fis g a) b8-. g-. d-. |
+
+    % page 2 system 2
+    b-. b'16 (a b c) d8-. b-. g-. |
+    e-. c-. a-. fis-. a-. d,-. |
+    \repeat unfold 2 { g16 (a b c) d-. b-. a8 c fis, }
+    g16 (a b c) d-. e-. fis8 a d, |
+    g16 (fis g a) b-. g-. fis (g a) d,-. e-. fis-. |
+
+    % page 3 system 1
+    \repeat unfold 3 { g (a b) d,-. e-. fis-. }
+    g-. d-. e-. \< fis-. g-. a-. |
+    b16 \sf (a g) fis-. e-. d-. cis (b a) g-. fis-. e-.
+    d4 a''8 fis4 d'8 |
+    <d,, d'>4 a''8 fis4 d'8 |
+
+    % page 3 system 2
+    <d,, d'>4 a''8 fis4 c'!8 |
+    <d,, d'>4 a''8 fis4 c'8 |
   }
 }
 
@@ -307,6 +509,30 @@ violinII = \relative d' {
   fis!8. fis16 \f fis4 r |
   <fis a>2 \sf r4 |
   R2.
+  
+  % exposition 
+  \repeat volta 2 {
+    \globalExposition
+    r8 gis-. \p e |
+    a4 r8 r fis-. d-. |
+    g4 r8 r b, \< (e) |
+    d \> (c) \! b-. a-. c-. d-. |
+    g, \f b'16 (a b c) d8-. b-. g-. 
+    
+    % page 2 system 2
+    d g'16 (fis g a) b8-. g-. d-. |
+    e-. c-. a-. fis-. a-. d,-. |
+    g d b <c d>4. |
+    \repeat unfold 3 { 
+      \repeat unfold 3 { <b d>8 } <c d>4.
+    }
+    <b d>8 r <a' c> [(<g b>)] r \stemUp <a c> 
+    (<g b>) r <a c> [(<g b>)] r8 r 
+    \stemNeutral
+    <g b>4. \sf <g cis> |
+    <fis d'>8 a fis 
+      \repeat unfold 7 { d16 fis a g fis e }
+  }
 }
 
 viola = \relative d' {
@@ -329,6 +555,22 @@ viola = \relative d' {
   d8. c16 \f c4 r |
   <d, c'>2 \sf r4 |
   R2.
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI
+    g8 \f \repeat unfold 11 { <b d>8 }
+    c8 c c c c c 
+    b d g <a, fis'>4. |
+    \repeat unfold 3 { 
+      \repeat unfold 3 { <b g'>8 } <a fis'>4.
+    }
+    <b g'>8 r d [d] r d |
+    d r d [d] r r |
+    e2. \sf |
+    fis8 d d d d d
+    \repeat unfold 6 { d16 fis a g fis e }
+  }
 }
 
 cello = \relative b {
@@ -372,6 +614,15 @@ cello = \relative b {
     }
   >>
   R2.
+  
+  % exposition
+  \repeat volta 2 {
+    \ExpoI
+    \ExpoII
+    e4. \sf a |
+    \repeat unfold 2 { d,8 d d d d d }
+    \repeat unfold 2 { d4 r8 d4 r8 }
+  }
 }
 
 
@@ -463,5 +714,10 @@ cello = \relative b {
     >>
 
   >>
-  \layout { }
+  \layout { 
+    \context {
+     \Staff
+     \RemoveEmptyStaves
+    }
+  }
 }
